@@ -26,6 +26,14 @@ $config = [
             ],
         ],
         'db' => $db,
+        'googleApi' => [
+            'class'       => '\skeeks\yii2\googleApi\GoogleApi',
+            'key'         => 'AIzaSyDwnGPGC8AqG_qQgrRNqrHLTVrtQhSS6Z4',
+            'serviceTranslateClass' => [
+                'class' => 'skeeks\googleApi\serviceTranslate\GoogleApiServiceTranslate',
+                'option' => 'value'
+            ],
+        ],
     ],
     'params' => $params,
     /*

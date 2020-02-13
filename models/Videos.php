@@ -24,15 +24,6 @@ class Videos extends \yii\db\ActiveRecord
         return $this->hasMany(Videoinfo::className(), ['video_id' => 'id']);
     }
 
-    public function getYouTubeVideoByHash($videoYouTubeHash){
-        $googleClient = \Yii::$app->googleApi->googleClient;
-        $youTube = new \Google_Service_YouTube($googleClient);
-        $videoYoutubeInfo = $youTube->videos->listVideos('snippet, statistics, contentDetails', [
-            'id' => $videoYouTubeHash,
-        ]);
-        return $videoYoutubeInfo;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -68,13 +59,27 @@ class Videos extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getYouTubeVideoByHash($videoYouTubeHash){
+        $googleClient = \Yii::$app->googleApi->googleClient;
+        $youTube = new \Google_Service_YouTube($googleClient);
+        $videoYoutubeInfo = $youTube->videos->listVideos('snippet, statistics, contentDetails', [
+            'id' => $videoYouTubeHash,
+        ]);
+        $channelId = $videoYoutubeInfo->items[0]->snippet->channelId;
+        $queryParams = [
+            'id' => $channelId,
+        ];
+        $responseSubscribers = $youTube->channels->listChannels('snippet,contentDetails,statistics', $queryParams);
+        $videoYoutubeInfo->items[0]->statistics->subscriberCount = $responseSubscribers->items[0]->statistics->subscriberCount;
+        return $videoYoutubeInfo;
+    }
+
     public function updateAllVideoInfo(){
         $allVideosQuery = Videos::find()->select(['id', 'youtube_video_id'])->all();
         foreach ($allVideosQuery as $video) {
             $videoId = $video->getId();
             $youtubeVideoId = $video->youTubeVideoId();
             $allVideoYoutubeInfo = Videos::getYouTubeVideoByHash($youtubeVideoId);
-            $channelId = $allVideoYoutubeInfo->items[0]->snippet->channelId;
             $videoYouTubeStatistic = $allVideoYoutubeInfo->items[0]->statistics;
             $data = array(
                 'video_id'          => $videoId,
@@ -82,7 +87,7 @@ class Videos extends \yii\db\ActiveRecord
                 'comments_count'    => $videoYouTubeStatistic->commentCount,
                 'likes_count'       => $videoYouTubeStatistic->likeCount,
                 'dislikes_count'    => $videoYouTubeStatistic->dislikeCount,
-                'subscribes_count'  => 0,
+                'subscribes_count'  => $videoYouTubeStatistic->subscriberCount,
             );
             Yii::$app->db->createCommand("INSERT INTO akey_videoinfo (video_id, views_count, comments_count, likes_count, dislikes_count, subscribes_count) VALUES (".$data['video_id'].", ".$data['views_count'].", ".$data['comments_count'].", ".$data['likes_count'].", ".$data['dislikes_count'].", ".$data['subscribes_count'].")")->execute();
         }
