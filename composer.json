@@ -20,7 +20,9 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "miloschuman/yii2-highcharts-widget": "^7.1",
         "google/apiclient": "^2.0",
-        "skeeks/yii2-google-api": "^2.0.1"
+        "skeeks/yii2-google-api": "^2.0.1",
+        "fedemotta/yii2-cronjob": "^1.1",
+        "omnilight/yii2-scheduling": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

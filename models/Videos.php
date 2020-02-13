@@ -68,4 +68,32 @@ class Videos extends \yii\db\ActiveRecord
         ];
     }
 
+    public function updateAllVideoInfo(){
+        $allVideosQuery = Videos::find()->select(['id', 'youtube_video_id'])->all();
+        foreach ($allVideosQuery as $video) {
+            $videoId = $video->getId();
+            $youtubeVideoId = $video->youTubeVideoId();
+            $allVideoYoutubeInfo = Videos::getYouTubeVideoByHash($youtubeVideoId);
+            $channelId = $allVideoYoutubeInfo->items[0]->snippet->channelId;
+            $videoYouTubeStatistic = $allVideoYoutubeInfo->items[0]->statistics;
+            $data = array(
+                'video_id'          => $videoId,
+                'views_count'       => $videoYouTubeStatistic->viewCount,
+                'comments_count'    => $videoYouTubeStatistic->commentCount,
+                'likes_count'       => $videoYouTubeStatistic->likeCount,
+                'dislikes_count'    => $videoYouTubeStatistic->dislikeCount,
+                'subscribes_count'  => 0,
+            );
+            Yii::$app->db->createCommand("INSERT INTO akey_videoinfo (video_id, views_count, comments_count, likes_count, dislikes_count, subscribes_count) VALUES (".$data['video_id'].", ".$data['views_count'].", ".$data['comments_count'].", ".$data['likes_count'].", ".$data['dislikes_count'].", ".$data['subscribes_count'].")")->execute();
+        }
+    }
+    public function getId(){
+        return $this->id;
+    }
+    public function youTubeVideoId(){
+        return $this->youtube_video_id;
+    }
+
 }
+// HOME=/var/www/dev4.anikeyeu.com/public_html/basic
+// /5 * * * * php $HOME/models Videos/updateAllVideoInfo

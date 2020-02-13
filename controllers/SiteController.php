@@ -14,6 +14,8 @@ use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
+
+
     /**
      * {@inheritdoc}
      */

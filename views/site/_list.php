@@ -3,6 +3,7 @@ use app\controllers\VideoinfoController;
 use app\models\Videos;
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
+
 ?>
 <div class="item_video mb50 pb50">
     <?php
@@ -22,11 +23,8 @@ use yii\helpers\HtmlPurifier;
     	}
 		$allVideoYoutubeInfo = Videos::getYouTubeVideoByHash($model->youtube_video_id);
         $videoYoutubeInfo = $allVideoYoutubeInfo->items[0]->snippet;
-        
-        $update_video_info_text = VideoinfoController::createInfoFromYoutube($model->id, $model->youtube_video_id);
 
     ?>
-    <pre><?php print_r($allVideoYoutubeInfo); ?></pre>
     <h2><?php echo $videoYoutubeInfo->title; ?></h2>
     <div class="row mb15">
 	    <div class="col-lg-6">

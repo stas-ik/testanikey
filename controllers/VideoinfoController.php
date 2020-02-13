@@ -76,25 +76,6 @@ class VideoinfoController extends Controller
         ]);
     }
 
-    public function createInfoFromYoutube($videoId, $youtubeVideoId){
-        $allVideoYoutubeInfo = Videos::getYouTubeVideoByHash($youtubeVideoId);
-        $channelId = $allVideoYoutubeInfo->items[0]->snippet->channelId;
-        $videoYouTubeStatistic = $allVideoYoutubeInfo->items[0]->statistics;
-        $data = array(
-            'video_id'          => $videoId,
-            'views_count'       => $videoYouTubeStatistic->viewCount,
-            'comments_count'    => $videoYouTubeStatistic->commentCount,
-            'likes_count'       => $videoYouTubeStatistic->likeCount,
-            'dislikes_count'    => $videoYouTubeStatistic->dislikeCount,
-            'subscribes_count'  => 0,
-        );
-        if(Yii::$app->db->createCommand("INSERT INTO akey_videoinfo (video_id, views_count, comments_count, likes_count, dislikes_count, subscribes_count) VALUES (".$data['video_id'].", ".$data['views_count'].", ".$data['comments_count'].", ".$data['likes_count'].", ".$data['dislikes_count'].", ".$data['subscribes_count'].")")->execute()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     /**
      * Updates an existing Videoinfo model.
      * If update is successful, the browser will be redirected to the 'view' page.

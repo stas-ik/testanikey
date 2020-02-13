@@ -3,6 +3,7 @@ use app\models\Videos;
 use yii\widgets\ListView;
 use yii\data\ActiveDataProvider;
 /* @var $this yii\web\View */
+// Videos::updateAllVideoInfo();
 
 $this->title = 'YouTube Video Info';
 
