@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Videos;
+use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
@@ -61,7 +63,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Videos::find(),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $this->view->title = 'Posts List';
+
+        return $this->render('index', ['listDataProvider' => $dataProvider]);
     }
 
     /**

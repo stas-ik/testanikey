@@ -113,3 +113,40 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+.dflex{
+    display: flex;
+    width: 100%;
+}
+.jcsb{
+    justify-content: space-between;
+}
+.mb10{
+    margin-bottom: 10px;
+}
+.mb15{
+    margin-bottom: 15px;
+}
+.mb50{
+    margin-bottom: 50px;
+}
+.pb50{
+    padding-bottom: 50px;
+}
+.video_thumbnail img{
+    width: 100%;
+    height: auto;
+}
+pre{
+    display: none;
+}
+.inforow{
+    border: 1px solid rgba(0,0,0,.3);
+}
+.like_a_label{
+    padding: 5px;
+}
+.like_a_value{
+    padding: 5px;
+    border-left: 1px solid rgba(0,0,0,.3);
+    font-weight: bold;
+}
