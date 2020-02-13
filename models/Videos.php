@@ -38,7 +38,7 @@ class Videos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['channel_title', 'video_title', 'video_description', 'video_thumbnail', 'youtube_video_id'], 'required'],
+            [['youtube_video_id'], 'required'],
             [['video_description'], 'string'],
             [['channel_title', 'video_title', 'video_thumbnail', 'youtube_video_id'], 'string', 'max' => 255],
         ];
